@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galaxy Cyber WiFi - Hotspot Login</title>
+  <style>
+    :root {
+      --bg-dark: #070b19;
+      --card-bg: #111827;
+      --accent: #38bdf8;
+      --green: #22c55e;
+      --green-hover: #16a34a;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #1e293b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #1e1b4b 0%, var(--bg-dark) 75%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
+      padding: 24px 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .brand-header { text-align: center; margin-bottom: 14px; }
+
+    .logo-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      color: #070b19;
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(to right, #ffffff, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .welcome-box {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #e2e8f0;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    /* Device Mode Switcher Tabs */
+    .device-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: #0f172a;
+      padding: 5px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 13.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #070b19;
+    }
+
+    .section-label {
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    /* Packages Grid (2 columns for clean fit) */
+    .packages {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-bottom: 16px;
+    }
+
+    .pkg {
+      border: 1.5px solid var(--border);
+      background: #0f172a;
+      padding: 11px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .pkg:hover { border-color: var(--accent); }
+
+    .pkg.active {
+      border-color: var(--green);
+      background: rgba(34, 197, 94, 0.12);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.15);
+    }
+
+    .pkg-title { font-weight: 700; font-size: 14px; color: #fff; }
+    .pkg-sub { font-size: 11px; color: var(--text-muted); margin: 2px 0 6px; }
+    .pkg-price {
+      display: inline-block;
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--green);
+      background: rgba(34, 197, 94, 0.15);
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: #0f172a;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 12px;
+    }
+
+    input:focus { border-color: var(--accent); }
+
+    button.primary-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--green);
+      color: #052e16;
+      font-weight: 800;
+      font-size: 15px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button.primary-btn:hover { background: var(--green-hover); }
+    button.primary-btn:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; }
+
+    #status {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      min-height: 18px;
+      color: #facc15;
+    }
+
+    /* Second Device / Voucher Box */
+    .voucher-section {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .voucher-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .voucher-row input { margin-bottom: 0; flex: 1; padding: 10px 12px; font-size: 14px; }
+
+    .voucher-btn {
+      padding: 0 16px;
+      background: #1e293b;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .footer {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .services-list { font-size: 11.5px; color: #cbd5e1; margin-bottom: 8px; }
+
+    .contact-btn {
+      display: inline-block;
+      margin-top: 4px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 13.5px;
+      padding: 5px 14px;
+      border-radius: 8px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="brand-header">
+      <span class="logo-badge">High-Speed Hotspot</span>
+      <h1>GALAXY CYBER WIFI</h1>
+    </div>
+
+    <div class="welcome-box">
+      Welcome to <strong>Galaxy Cyber</strong>! We provide all cyber services at affordable prices. Choose 1 or 2 devices below to connect.
+    </div>
+
+    <!-- 1 Device vs 2 Devices Switcher -->
+    <div class="device-tabs">
+      <button type="button" class="tab-btn active" id="tab1" onclick="switchDeviceMode(1)">1 Device</button>
+      <button type="button" class="tab-btn" id="tab2" onclick="switchDeviceMode(2)">2 Devices</button>
+    </div>
+
+    <div class="section-label" id="pkgLabel">1. Select 1-Device Bundle</div>
+    <div class="packages" id="packagesGrid"></div>
+
+    <div class="section-label">2. Enter M-Pesa Number</div>
+    <input type="tel" id="phone" placeholder="e.g. 0712345678" required />
+
+    <button id="payBtn" class="primary-btn" onclick="initiatePayment()">Pay via M-Pesa</button>
+    <div id="status"></div>
+
+    <!-- 2nd Device / Voucher Login -->
+    <div class="voucher-section">
+      <div class="section-label">Connecting a 2nd Device or Have a Code?</div>
+      <div class="voucher-row">
+        <input type="text" id="voucherCode" placeholder="Enter 6-digit access code" />
+        <button type="button" class="voucher-btn" onclick="loginWithCode()">Connect</button>
+      </div>
+    </div>
+
+    <!-- Hidden MikroTik Auto-Login Form -->
+    <form name="login" action="$(link-login-only)" method="post" style="display:none;">
+      <input type="hidden" name="username" id="mkUser" />
+      <input type="hidden" name="password" id="mkPass" />
+      <input type="hidden" name="dst" value="https://www.google.com" />
+    </form>
+
+    <div class="footer">
+      <div class="services-list">
+        Printing • Scanning • Photocopy • KRA & eCitizen Services • Online Applications
+      </div>
+      <div>Need help or cyber assistance? Call / SMS us:</div>
+      <a href="tel:0728847578" class="contact-btn">📞 0728 847 578</a>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://your-backend-server.onrender.com";
+    const CLIENT_MAC = "$(mac)";
+    const CLIENT_IP = "$(ip)";
+
+    // Exact pricing tiers for 1 Device and 2 Devices
+    const PLANS = {
+      1: [
+        { id: "1d_1h",  title: "1 Hour",   amount: 10,   duration: "01:00:00", devices: 1 },
+        { id: "1d_2h",  title: "2 Hours",  amount: 15,   duration: "02:00:00", devices: 1 },
+        { id: "1d_6h",  title: "6 Hours",  amount: 20,   duration: "06:00:00", devices: 1 },
+        { id: "1d_24h", title: "24 Hours", amount: 45,   duration: "24:00:00", devices: 1 },
+        { id: "1d_7d",  title: "1 Week",   amount: 250,  duration: "7d 00:00:00", devices: 1 },
+        { id: "1d_30d", title: "1 Month",  amount: 1000, duration: "30d 00:00:00", devices: 1 }
+      ],
+      2: [
+        { id: "2d_1h",  title: "1 Hour",   amount: 15,   duration: "01:00:00", devices: 2 },
+        { id: "2d_3h",  title: "3 Hours",  amount: 25,   duration: "03:00:00", devices: 2 },
+        { id: "2d_6h",  title: "6 Hours",  amount: 35,   duration: "06:00:00", devices: 2 },
+        { id: "2d_24h", title: "24 Hours", amount: 65,   duration: "24:00:00", devices: 2 },
+        { id: "2d_7d",  title: "1 Week",   amount: 300,  duration: "7d 00:00:00", devices: 2 },
+        { id: "2d_30d", title: "1 Month",  amount: 1500, duration: "30d 00:00:00", devices: 2 }
+      ]
+    };
+
+    let currentDevices = 1;
+    let selectedPkg = PLANS[1][0];
+
+    function renderPackages() {
+      const grid = document.getElementById("packagesGrid");
+      grid.innerHTML = "";
+
+      PLANS[currentDevices].forEach((pkg, index) => {
+        const div = document.createElement("div");
+        div.className = "pkg" + (pkg.id === selectedPkg.id ? " active" : "");
+        div.innerHTML = `
+          <div class="pkg-title">${pkg.title}</div>
+          <div class="pkg-sub">${pkg.devices} ${pkg.devices === 1 ? "Device" : "Devices"}</div>
+          <div class="pkg-price">Ksh ${pkg.amount}</div>
+        `;
+        div.onclick = () => {
+          selectedPkg = pkg;
+          renderPackages();
+        };
+        grid.appendChild(div);
+      });
+    }
+
+    function switchDeviceMode(numDevices) {
+      currentDevices = numDevices;
+      selectedPkg = PLANS[numDevices][0];
+      document.getElementById("tab1").classList.toggle("active", numDevices === 1);
+      document.getElementById("tab2").classList.toggle("active", numDevices === 2);
+      document.getElementById("pkgLabel").textContent =
+        `1. Select ${numDevices === 1 ? "1-Device" : "2-Devices"} Bundle`;
+      renderPackages();
+    }
+
+    // Initialize with 1-Device packages
+    renderPackages();
+
+    async function initiatePayment() {
+      const phone = document.getElementById("phone").value.trim();
+      const statusEl = document.getElementById("status");
+      const btn = document.getElementById("payBtn");
+
+      if (!phone || phone.length < 10) {
+        statusEl.style.color = "#ef4444";
+        statusEl.textContent = "Please enter a valid M-Pesa phone number.";
+        return;
+      }
+
+      btn.disabled = true;
+      statusEl.style.color = "#facc15";
+      statusEl.textContent = `Sending STK Push for Ksh ${selectedPkg.amount}...`;
+
+      try {
+        const res = await fetch(`${API_URL}/api/stkpush`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            phone,
+            amount: selectedPkg.amount,
+            duration: selectedPkg.duration,
+            devices: selectedPkg.devices,
+            mac: CLIENT_MAC,
+            ip: CLIENT_IP
+          })
+        });
+
+        const data = await res.json();
+        if (!data.checkoutRequestId) throw new Error(data.error || "STK Push failed");
+
+        statusEl.textContent = "Enter your M-Pesa PIN on your phone...";
+        pollPaymentStatus(data.checkoutRequestId);
+      } catch (err) {
+        statusEl.style.color = "#ef4444";
+        statusEl.textContent = "Error: " + err.message;
+        btn.disabled = false;
+      }
+    }
+
+    function pollPaymentStatus(checkoutRequestId) {
+      const statusEl = document.getElementById("status");
+      let attempts = 0;
+
+      const timer = setInterval(async () => {
+        attempts++;
+        try {
+          const res = await fetch(`${API_URL}/api/status/${checkoutRequestId}`);
+          const data = await res.json();
+
+          if (data.status === "PAID") {
+            clearInterval(timer);
+            statusEl.style.color = "#22c55e";
+
+            if (data.devices === 2) {
+              statusEl.innerHTML = `Paid! 2nd Device Code: <strong>${data.username}</strong>. Connecting...`;
+            } else {
+              statusEl.textContent = "Payment confirmed! Connecting to Galaxy Cyber WiFi...";
+            }
+
+            setTimeout(() => {
+              document.getElementById("mkUser").value = data.username;
+              document.getElementById("mkPass").value = data.password;
+              document.forms["login"].submit();
+            }, data.devices === 2 ? 2500 : 800);
+          } else if (data.status === "FAILED" || attempts > 24) {
+            clearInterval(timer);
+            statusEl.style.color = "#ef4444";
+            statusEl.textContent = "Payment cancelled or timed out. Try again.";
+            document.getElementById("payBtn").disabled = false;
+          }
+        } catch (e) {}
+      }, 2500);
+    }
+
+    function loginWithCode() {
+      const code = document.getElementById("voucherCode").value.trim();
+      if (!code) return;
+      document.getElementById("mkUser").value = code;
+      document.getElementById("mkPass").value = code;
+      document.forms["login"].submit();
+    }
+  </script>
+</body>
+</html>
